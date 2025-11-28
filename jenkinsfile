@@ -1,6 +1,11 @@
 pipeline {
     agent any
 
+    tools {
+        jdk 'jdk-17'           // Must match your Jenkins Global Tool Configuration
+        maven 'Maven-3.8.7'    // Must match your Jenkins Maven installation
+    }
+
     environment {
         DOCKERHUB_CREDENTIALS = credentials('dockerhub-creds')
         IMAGE_NAME = "sonalipawar22/KharidoBecho"
@@ -8,7 +13,7 @@ pipeline {
 
     stages {
 
-        stage('Clone') {
+        stage('Clone Repository') {
             steps {
                 git branch: 'main', url: 'https://github.com/Sonalip-22/Kharido-becho.git'
             }
@@ -49,8 +54,11 @@ pipeline {
         stage('Deploy Container on EC2') {
             steps {
                 sh """
-                docker stop myapp || true
-                docker rm myapp || true
+                # Stop and remove existing container if running
+                if [ \$(docker ps -aq -f name=myapp) ]; then
+                    docker stop myapp
+                    docker rm myapp
+                fi
                 docker pull $IMAGE_NAME:latest
                 docker run -d --name myapp -p 8080:8080 $IMAGE_NAME:latest
                 """
@@ -58,4 +66,3 @@ pipeline {
         }
     }
 }
-
