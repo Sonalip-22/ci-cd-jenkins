@@ -8,7 +8,7 @@ pipeline {
 
     environment {
         DOCKERHUB_CREDENTIALS = credentials('dockerhub-creds')
-        IMAGE_NAME = "sonalipawar22/KharidoBecho"
+        IMAGE_NAME = "sonalipawar22/kharidobecho"
     }
 
     stages {
