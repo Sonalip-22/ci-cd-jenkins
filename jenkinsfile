@@ -4,7 +4,7 @@ pipeline {
     // tools {
     //     jdk 'jdk-17'            // Must match your Jenkins JDK name
     //     maven 'Apache Maven'    // Must match Jenkins Global Tool name
-    }
+    // }
 
     environment {
         DOCKERHUB_CREDENTIALS = credentials('dockerhub-creds')
